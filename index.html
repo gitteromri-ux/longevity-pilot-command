@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Longevity — Pilot Command</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+:root{
+  --bg-0:#050a18; --bg-1:#0a1330; --bg-2:#0e1b45;
+  --blue:#2f6bff; --blue-lt:#5aa9ff; --cyan:#7fd6ff; --ice:#cfe8ff;
+  --neon:#eaf4ff; --white:#ffffff;
+  --ink:#eaf1ff; --sub:#9fb4d8; --muted:#6d82a8;
+  --good:#38e0a8; --warn:#ffb547; --bad:#ff5d6c;
+  --glass:rgba(18,32,72,0.55); --glass-2:rgba(12,22,56,0.72);
+  --stroke:rgba(120,170,255,0.18); --stroke-2:rgba(150,200,255,0.30);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Inter',system-ui,sans-serif;color:var(--ink);
+  background:
+    radial-gradient(1200px 700px at 15% -10%, rgba(47,107,255,0.28), transparent 60%),
+    radial-gradient(1000px 650px at 100% 0%, rgba(90,169,255,0.18), transparent 55%),
+    radial-gradient(900px 900px at 50% 120%, rgba(20,60,160,0.25), transparent 60%),
+    linear-gradient(180deg,#050a18 0%,#070f26 40%,#050a18 100%);
+  background-attachment:fixed;min-height:100vh;overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+/* ambient neon orbs */
+.orb{position:fixed;border-radius:50%;filter:blur(60px);opacity:.5;z-index:0;pointer-events:none}
+.orb.a{width:420px;height:420px;top:-120px;left:-100px;background:radial-gradient(circle,rgba(47,107,255,.55),transparent 70%)}
+.orb.b{width:360px;height:360px;bottom:-120px;right:-80px;background:radial-gradient(circle,rgba(127,214,255,.35),transparent 70%)}
+.orb.c{width:300px;height:300px;top:40%;left:50%;background:radial-gradient(circle,rgba(90,169,255,.22),transparent 70%)}
+
+.wrap{position:relative;z-index:2;max-width:1280px;margin:0 auto;padding:26px 22px 90px}
+
+/* ---------- HEADER ---------- */
+header{display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-bottom:22px}
+.brand{display:flex;align-items:center;gap:14px}
+.logo{
+  width:46px;height:46px;border-radius:14px;flex:none;
+  background:linear-gradient(145deg,#5aa9ff,#2f6bff);
+  box-shadow:0 2px 6px rgba(0,0,0,.4),0 10px 30px rgba(47,107,255,.55),inset 0 1px 1px rgba(255,255,255,.6);
+  display:grid;place-items:center;position:relative;
+}
+.logo::after{content:"";position:absolute;inset:6px;border-radius:9px;border:1.5px solid rgba(255,255,255,.55);opacity:.7}
+.logo span{font-family:'Manrope';font-weight:800;font-size:22px;color:#fff;text-shadow:0 1px 4px rgba(0,20,80,.6)}
+.brand h1{font-family:'Manrope';font-weight:800;font-size:20px;letter-spacing:-.02em}
+.brand p{font-size:12px;color:var(--sub);letter-spacing:.04em;text-transform:uppercase;margin-top:2px}
+.hstat{display:flex;gap:10px;flex-wrap:wrap}
+.chip{
+  padding:9px 14px;border-radius:13px;background:var(--glass);border:1px solid var(--stroke);
+  backdrop-filter:blur(16px);box-shadow:0 8px 24px rgba(0,10,40,.35),inset 0 1px 0 rgba(255,255,255,.12);
+  font-size:12px;color:var(--sub);white-space:nowrap
+}
+.chip b{color:var(--white);font-weight:700;font-size:14px}
+
+/* ---------- TABS ---------- */
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:22px;padding:8px;border-radius:18px;
+  background:var(--glass-2);border:1px solid var(--stroke);backdrop-filter:blur(20px);
+  box-shadow:0 10px 30px rgba(0,8,32,.4),inset 0 1px 0 rgba(255,255,255,.1)}
+.tab{padding:10px 15px;border-radius:12px;font-size:13px;font-weight:600;color:var(--sub);
+  cursor:pointer;border:1px solid transparent;transition:.25s;white-space:nowrap;user-select:none}
+.tab:hover{color:var(--ice);background:rgba(90,169,255,.08)}
+.tab.active{color:#fff;background:linear-gradient(145deg,#2f6bff,#1e49c8);
+  border-color:var(--stroke-2);
+  box-shadow:0 6px 18px rgba(47,107,255,.5),0 1px 2px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.35)}
+.tab.pilot.active{background:linear-gradient(145deg,#00d0ff,#0077e6);box-shadow:0 6px 20px rgba(0,190,255,.55),inset 0 1px 0 rgba(255,255,255,.4)}
+
+/* ---------- CONTROL BAR (draggable inputs) ---------- */
+.controls{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px;
+  padding:20px;border-radius:22px;background:var(--glass);border:1px solid var(--stroke-2);
+  backdrop-filter:blur(22px);
+  box-shadow:0 2px 4px rgba(0,0,0,.3),0 20px 50px rgba(0,10,45,.5),inset 0 1px 0 rgba(255,255,255,.15);
+  position:relative;overflow:hidden}
+.controls::before{content:"";position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(127,214,255,.7),transparent)}
+.ctrl label{display:flex;justify-content:space-between;align-items:baseline;font-size:12px;
+  color:var(--sub);font-weight:600;text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px}
+.ctrl .val{font-family:'Manrope';font-weight:800;font-size:19px;color:#fff;letter-spacing:-.02em;
+  text-shadow:0 0 14px rgba(90,169,255,.6)}
+input[type=range]{-webkit-appearance:none;width:100%;height:6px;border-radius:6px;
+  background:linear-gradient(90deg,var(--blue-lt),var(--blue));outline:none;cursor:pointer;
+  box-shadow:inset 0 1px 3px rgba(0,0,0,.5),0 0 12px rgba(47,107,255,.35)}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;border-radius:50%;
+  background:radial-gradient(circle at 35% 30%,#fff,#cfe8ff 60%,#5aa9ff);
+  box-shadow:0 2px 6px rgba(0,0,0,.5),0 0 0 4px rgba(90,169,255,.25),0 0 18px rgba(127,214,255,.9);
+  border:1px solid #fff;cursor:grab;transition:transform .1s}
+input[type=range]::-webkit-slider-thumb:active{cursor:grabbing;transform:scale(1.15)}
+input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;border:1px solid #fff;
+  background:radial-gradient(circle at 35% 30%,#fff,#cfe8ff 60%,#5aa9ff);
+  box-shadow:0 2px 6px rgba(0,0,0,.5),0 0 18px rgba(127,214,255,.9)}
+.ctrl .range-labels{display:flex;justify-content:space-between;font-size:10px;color:var(--muted);margin-top:6px}
+.reset-btn{position:absolute;top:16px;right:18px;font-size:11px;color:var(--cyan);cursor:pointer;
+  padding:5px 11px;border-radius:9px;border:1px solid var(--stroke);background:rgba(90,169,255,.08);transition:.2s;font-weight:600}
+.reset-btn:hover{background:rgba(90,169,255,.2);color:#fff}
+
+/* ---------- PANELS ---------- */
+.panel{display:none;animation:fade .5s ease both}
+.panel.active{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.panel-head{margin-bottom:18px}
+.panel-head h2{font-family:'Manrope';font-weight:800;font-size:26px;letter-spacing:-.03em;line-height:1.1}
+.panel-head p{color:var(--sub);font-size:14px;margin-top:6px;max-width:760px;line-height:1.5}
+
+/* KPI cards */
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin-bottom:22px}
+.kpi{position:relative;padding:20px 20px 18px;border-radius:20px;
+  background:linear-gradient(160deg,rgba(24,42,92,.72),rgba(10,20,50,.72));
+  border:1px solid var(--stroke);backdrop-filter:blur(18px);
+  box-shadow:0 2px 4px rgba(0,0,0,.3),0 16px 40px rgba(0,10,45,.45),inset 0 1px 0 rgba(255,255,255,.14);
+  transition:transform .3s,box-shadow .3s;overflow:hidden}
+.kpi:hover{transform:translateY(-4px);
+  box-shadow:0 4px 8px rgba(0,0,0,.35),0 26px 60px rgba(0,20,70,.6),0 0 40px rgba(47,107,255,.25),inset 0 1px 0 rgba(255,255,255,.2)}
+.kpi::before{content:"";position:absolute;top:-40%;right:-30%;width:160px;height:160px;border-radius:50%;
+  background:radial-gradient(circle,rgba(90,169,255,.28),transparent 70%);pointer-events:none}
+.kpi .lab{font-size:11px;color:var(--sub);text-transform:uppercase;letter-spacing:.08em;font-weight:600}
+.kpi .num{font-family:'Manrope';font-weight:800;font-size:30px;letter-spacing:-.03em;margin:8px 0 4px;
+  color:#fff;text-shadow:0 0 20px rgba(90,169,255,.45)}
+.kpi .sub{font-size:12px;color:var(--muted)}
+.kpi.accent .num{color:var(--cyan);text-shadow:0 0 22px rgba(127,214,255,.7)}
+.kpi.good .num{color:var(--good);text-shadow:0 0 20px rgba(56,224,168,.5)}
+.kpi.warn .num{color:var(--warn);text-shadow:0 0 20px rgba(255,181,71,.5)}
+.kpi.bad .num{color:var(--bad);text-shadow:0 0 20px rgba(255,93,108,.5)}
+
+/* cards / charts */
+.grid{display:grid;gap:18px}
+.g2{grid-template-columns:repeat(2,1fr)}
+.g3{grid-template-columns:repeat(3,1fr)}
+.card{position:relative;padding:20px;border-radius:20px;
+  background:linear-gradient(160deg,rgba(18,34,80,.6),rgba(9,18,46,.7));
+  border:1px solid var(--stroke);backdrop-filter:blur(18px);
+  box-shadow:0 2px 4px rgba(0,0,0,.3),0 16px 44px rgba(0,10,45,.45),inset 0 1px 0 rgba(255,255,255,.12)}
+.card h3{font-family:'Manrope';font-weight:700;font-size:15px;margin-bottom:4px;letter-spacing:-.01em}
+.card .cap{font-size:12px;color:var(--muted);margin-bottom:14px}
+.chart-box{position:relative;height:280px}
+.chart-box.tall{height:340px}
+.verdict{margin-top:18px;padding:18px 20px;border-radius:18px;
+  background:linear-gradient(120deg,rgba(47,107,255,.14),rgba(127,214,255,.06));
+  border:1px solid var(--stroke-2);border-left:3px solid var(--cyan);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.1),0 0 30px rgba(47,107,255,.12)}
+.verdict h4{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--cyan);margin-bottom:8px;font-weight:700}
+.verdict p{font-size:14px;line-height:1.6;color:var(--ice)}
+.verdict b{color:#fff}
+
+/* tables */
+table{width:100%;border-collapse:collapse;font-size:13px}
+th,td{padding:11px 12px;text-align:right;border-bottom:1px solid rgba(120,170,255,.1)}
+th:first-child,td:first-child{text-align:left}
+th{font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--sub);font-weight:600}
+td{color:var(--ice)}
+tr:hover td{background:rgba(90,169,255,.06)}
+.tag{display:inline-block;padding:3px 9px;border-radius:8px;font-size:11px;font-weight:700}
+.tag.good{background:rgba(56,224,168,.16);color:var(--good)}
+.tag.warn{background:rgba(255,181,71,.16);color:var(--warn)}
+.tag.bad{background:rgba(255,93,108,.16);color:var(--bad)}
+.tag.blue{background:rgba(90,169,255,.16);color:var(--blue-lt)}
+tr.hot td{background:rgba(0,190,255,.10)}
+
+/* gauges */
+.gauges{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.gauge-card{text-align:center;padding:22px}
+.gauge-card h3{margin-bottom:6px}
+.gauge-wrap{position:relative;height:150px}
+.gauge-center{position:absolute;top:64%;left:0;right:0;text-align:center}
+.gauge-center .gv{font-family:'Manrope';font-weight:800;font-size:26px;color:#fff}
+.gauge-center .gt{font-size:11px;color:var(--muted)}
+
+/* pilot ramp badges */
+.legend-row{display:flex;gap:16px;flex-wrap:wrap;margin-top:12px;font-size:12px;color:var(--sub)}
+.legend-row span{display:flex;align-items:center;gap:7px}
+.dot{width:11px;height:11px;border-radius:3px}
+
+.note{font-size:12px;color:var(--muted);margin-top:26px;text-align:center;line-height:1.6}
+.foot-flag{display:inline-flex;align-items:center;gap:8px;padding:8px 16px;border-radius:12px;
+  background:rgba(56,224,168,.1);border:1px solid rgba(56,224,168,.3);color:var(--good);font-weight:600;font-size:13px;margin-top:6px}
+
+@media(max-width:900px){
+  .g2,.g3{grid-template-columns:1fr}
+  .controls{grid-template-columns:repeat(2,1fr)}
+  .gauges{grid-template-columns:1fr}
+}
+@media(max-width:560px){.controls{grid-template-columns:1fr}.brand h1{font-size:17px}}
+</style>
+</head>
+<body>
+<div class="orb a"></div><div class="orb b"></div><div class="orb c"></div>
+
+<div class="wrap">
+  <header>
+    <div class="brand">
+      <div class="logo"><span>L</span></div>
+      <div>
+        <h1>Longevity — Pilot Command</h1>
+        <p>CEO Planning Model · July–August 2026</p>
+      </div>
+    </div>
+    <div class="hstat">
+      <div class="chip">Pilot Budget <b>$77,000</b></div>
+      <div class="chip">Target <b>60 Acq</b></div>
+      <div class="chip">Sale Price <b>$1,200</b></div>
+    </div>
+  </header>
+
+  <div class="tabs" id="tabs">
+    <div class="tab pilot active" data-t="pilot">🎯 Pilot Path</div>
+    <div class="tab" data-t="exec">Executive Summary</div>
+    <div class="tab" data-t="unit">Unit Economics</div>
+    <div class="tab" data-t="path">Path to Wins</div>
+    <div class="tab" data-t="rep">Rep Capacity</div>
+    <div class="tab" data-t="funnel">Funnel &amp; Leakage</div>
+    <div class="tab" data-t="mix">Lead Mix</div>
+    <div class="tab" data-t="risk">Sensitivity &amp; Risk</div>
+  </div>
+
+  <!-- CONTROL BAR -->
+  <div class="controls">
+    <div class="reset-btn" id="reset">↺ Reset defaults</div>
+    <div class="ctrl">
+      <label>Weekly Spend <span class="val" id="v-spend">$5,800</span></label>
+      <input type="range" id="s-spend" min="2000" max="10000" step="100" value="5800" />
+      <div class="range-labels"><span>$2k</span><span>$10k</span></div>
+    </div>
+    <div class="ctrl">
+      <label>CPL (paid) <span class="val" id="v-cpl">$15</span></label>
+      <input type="range" id="s-cpl" min="8" max="30" step="1" value="15" />
+      <div class="range-labels"><span>$8</span><span>$30</span></div>
+    </div>
+    <div class="ctrl">
+      <label>Contacted Rate <span class="val" id="v-contact">25%</span></label>
+      <input type="range" id="s-contact" min="10" max="60" step="1" value="25" />
+      <div class="range-labels"><span>10%</span><span>60%</span></div>
+    </div>
+    <div class="ctrl">
+      <label>Close Rate <span class="val" id="v-close">6.21%</span></label>
+      <input type="range" id="s-close" min="1" max="12" step="0.1" value="6.21" />
+      <div class="range-labels"><span>1%</span><span>12%</span></div>
+    </div>
+  </div>
+
+  <!-- ================= PILOT PATH ================= -->
+  <section class="panel active" id="p-pilot">
+    <div class="panel-head">
+      <h2>Pilot Path — From 6 Wins Today to 60 by Sep 1</h2>
+      <p>The full 60-day runway on the remaining pilot budget. Spend holds at $5k/week until the <b>$77k cap</b> is exhausted (~8 weeks). Reps stay at 3, but contact rate ramps <b>28% → 45%</b> and close rate climbs steadily — with the final 4 weeks at much higher conversion to land <b>exactly 60 acquisitions</b>.</p>
+    </div>
+
+    <div class="kpis">
+      <div class="kpi"><div class="lab">Spent to Date</div><div class="num">$37,773</div><div class="sub">Jun 1 → Jul 2</div></div>
+      <div class="kpi bad"><div class="lab">Acq to Date</div><div class="num">6</div><div class="sub">of 60 target</div></div>
+      <div class="kpi accent"><div class="lab">Budget Remaining</div><div class="num">$39,227</div><div class="sub">of $77k cap</div></div>
+      <div class="kpi good"><div class="lab">Acq Still Needed</div><div class="num">54</div><div class="sub">in ~8 weeks</div></div>
+      <div class="kpi"><div class="lab">Runway</div><div class="num">8.6 wks</div><div class="sub">Jul 3 → Sep 1</div></div>
+    </div>
+
+    <div class="grid g2" style="margin-bottom:18px">
+      <div class="card">
+        <h3>Cumulative Acquisitions — The Climb to 60</h3>
+        <div class="cap">Actual to date, then the weekly forward plan compounding to the target</div>
+        <div class="chart-box tall"><canvas id="c-pilot-cum"></canvas></div>
+      </div>
+      <div class="card">
+        <h3>The Ramp — Contact % &amp; Close % Rising Together</h3>
+        <div class="cap">Gradual early lift, aggressive final 4 weeks</div>
+        <div class="chart-box tall"><canvas id="c-pilot-ramp"></canvas></div>
+        <div class="legend-row">
+          <span><i class="dot" style="background:#5aa9ff"></i>Contact rate</span>
+          <span><i class="dot" style="background:#00d0ff"></i>Close rate (acq/contacted)</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-bottom:18px">
+      <h3>Weekly Battle Plan — Every Metric to Hit 60</h3>
+      <div class="cap">Weeks 1–4 = July · Weeks 5–8 = August · Week 8 is a partial week (budget cap)</div>
+      <div style="overflow-x:auto">
+        <table id="pilot-weekly">
+          <thead><tr>
+            <th>Wk</th><th>Spend</th><th>Leads</th><th>Contact %</th><th>Contacted</th>
+            <th>Close %</th><th>Acq</th><th>Cum Acq</th><th>Revenue</th><th>Calls / Lead</th><th>Dials / Rep / Day</th>
+          </tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="grid g2" style="margin-bottom:18px">
+      <div class="card">
+        <h3>Monthly Rollup — July vs August</h3>
+        <div class="cap">Where the wins land across the two pilot months</div>
+        <div class="chart-box"><canvas id="c-pilot-month"></canvas></div>
+      </div>
+      <div class="card">
+        <h3>Month-by-Month Targets</h3>
+        <div class="cap">What must be true at each month-end checkpoint</div>
+        <div style="overflow-x:auto">
+          <table id="pilot-month">
+            <thead><tr><th>Month</th><th>Spend</th><th>Leads</th><th>Acq</th><th>Cum Acq</th><th>Revenue</th><th>Avg Close</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+        <div style="text-align:center"><div class="foot-flag" id="pilot-flag">✓ Lands exactly on 60 acq at $77,000 total spend</div></div>
+      </div>
+    </div>
+
+    <div class="verdict">
+      <h4>Pilot Verdict</h4>
+      <p id="pilot-verdict"></p>
+    </div>
+  </section>
+
+  <!-- ================= EXEC ================= -->
+  <section class="panel" id="p-exec">
+    <div class="panel-head">
+      <h2>Executive Summary — A Profitable Plan That Lives on Conversion</h2>
+      <p>The live snapshot of the operating model. Drag the four inputs above and every card, chart and tab recalculates in real time.</p>
+    </div>
+    <div class="kpis" id="exec-kpis"></div>
+    <div class="grid g2">
+      <div class="card"><h3>The Week's P&amp;L</h3><div class="cap" id="exec-pl-cap"></div><div class="chart-box"><canvas id="c-exec-pl"></canvas></div></div>
+      <div class="card"><h3>Margin of Safety — Wins vs Break-Even</h3><div class="cap" id="exec-mos-cap"></div><div class="chart-box"><canvas id="c-exec-mos"></canvas></div></div>
+    </div>
+    <div class="card" style="margin-top:18px"><h3>Monthly Profit Swings on One Point of Conversion</h3><div class="cap">Profit sensitivity to close rate at current spend &amp; contact</div><div class="chart-box"><canvas id="c-exec-swing"></canvas></div></div>
+    <div class="verdict"><h4>Board Takeaway</h4><p id="exec-verdict"></p></div>
+  </section>
+
+  <!-- ================= UNIT ================= -->
+  <section class="panel" id="p-unit">
+    <div class="panel-head"><h2>Unit Economics — Does the Plan Clear CAC?</h2><p>Because spend is fixed each week, CAC and ROAS are entirely a function of how many wins the team closes.</p></div>
+    <div class="kpis" id="unit-kpis"></div>
+    <div class="grid g2">
+      <div class="card"><h3>ROAS by Weekly Wins</h3><div class="cap">Crosses 1.0× at break-even; target sits above</div><div class="chart-box"><canvas id="c-unit-roas"></canvas></div></div>
+      <div class="card"><h3>CAC Falls as Wins Rise</h3><div class="cap">Fixed spend, more clients — vs $1,200 price</div><div class="chart-box"><canvas id="c-unit-cac"></canvas></div></div>
+    </div>
+    <div class="verdict"><h4>Economics Verdict</h4><p id="unit-verdict"></p></div>
+  </section>
+
+  <!-- ================= PATH ================= -->
+  <section class="panel" id="p-path">
+    <div class="panel-head"><h2>Path to Wins — What Close Rate Gets Us There</h2><p>Working backward from the target: at the current contact rate, what close rate on contacted leads is required?</p></div>
+    <div class="kpis" id="path-kpis"></div>
+    <div class="card"><h3>Wins Scale Linearly With Close Rate</h3><div class="cap">Acquisitions &amp; revenue per week vs close rate</div><div class="chart-box tall"><canvas id="c-path"></canvas></div></div>
+    <div class="card" style="margin-top:18px"><h3>Close Rate → Wins → Revenue → Profit</h3><div style="overflow-x:auto"><table id="path-table"><thead><tr><th>Close %</th><th>Wins/Wk</th><th>Rev/Wk</th><th>Profit/Wk</th><th>Verdict</th></tr></thead><tbody></tbody></table></div></div>
+    <div class="verdict"><h4>Conversion Verdict</h4><p id="path-verdict"></p></div>
+  </section>
+
+  <!-- ================= REP ================= -->
+  <section class="panel" id="p-rep">
+    <div class="panel-head"><h2>Rep Capacity — How Hard Must 3 Reps Dial?</h2><p>Contact rate is powered by dialing volume. Here's the calling load the plan demands from the fixed 3-rep team.</p></div>
+    <div class="kpis" id="rep-kpis"></div>
+    <div class="grid g2">
+      <div class="card"><h3>Dials per Weekday vs Team Size</h3><div class="cap">What each headcount can service</div><div class="chart-box"><canvas id="c-rep-cap"></canvas></div></div>
+      <div class="card"><h3>Dials per Rep per Day</h3><div class="cap">The load carried at 3 / 4 / 5 reps</div><div class="chart-box"><canvas id="c-rep-load"></canvas></div></div>
+    </div>
+    <div class="card" style="margin-top:18px"><h3>Daily Plan — Spend, Leads &amp; Dials</h3><div style="overflow-x:auto"><table id="rep-table"><thead><tr><th>Day</th><th>Spend</th><th>Leads</th><th>Dials (team)</th><th>Dials/Rep</th><th>Calls/Lead</th></tr></thead><tbody></tbody></table></div></div>
+    <div class="verdict"><h4>Capacity Verdict</h4><p id="rep-verdict"></p></div>
+  </section>
+
+  <!-- ================= FUNNEL ================= -->
+  <section class="panel" id="p-funnel">
+    <div class="panel-head"><h2>Funnel &amp; Leakage — Where the Lead Flow Goes</h2><p>From leads generated to wins closed — and the value trapped in leads that are never contacted.</p></div>
+    <div class="kpis" id="funnel-kpis"></div>
+    <div class="grid g2">
+      <div class="card"><h3>The Funnel — Leads → Contacted → Wins</h3><div class="cap">Weekly volume at each stage</div><div class="chart-box"><canvas id="c-funnel"></canvas></div></div>
+      <div class="card"><h3>Highest-Yield Single Levers</h3><div class="cap">Added wins/week per realistic move</div><div class="chart-box"><canvas id="c-funnel-lever"></canvas></div></div>
+    </div>
+    <div class="verdict"><h4>Funnel Verdict</h4><p id="funnel-verdict"></p></div>
+  </section>
+
+  <!-- ================= MIX ================= -->
+  <section class="panel" id="p-mix">
+    <div class="panel-head"><h2>Lead Mix — The Free Demand From Bio</h2><p>The organic bio link supplies leads at $0 CPL, pulling the blended cost of acquisition below the paid rate.</p></div>
+    <div class="kpis" id="mix-kpis"></div>
+    <div class="grid g2">
+      <div class="card"><h3>Lead Source Split</h3><div class="cap">Paid vs organic bio</div><div class="chart-box"><canvas id="c-mix-split"></canvas></div></div>
+      <div class="card"><h3>Growing Bio Share Drops Blended CPL</h3><div class="cap">Blended CPL vs bio share of total</div><div class="chart-box"><canvas id="c-mix-cpl"></canvas></div></div>
+    </div>
+    <div class="verdict"><h4>Lead Mix Verdict</h4><p id="mix-verdict"></p></div>
+  </section>
+
+  <!-- ================= RISK ================= -->
+  <section class="panel" id="p-risk">
+    <div class="panel-head"><h2>Sensitivity &amp; Risk — The Two Dials That Decide the Month</h2><p>Every combination of contact rate × close rate, mapped to weekly wins. Only the top-right zone clears break-even.</p></div>
+    <div class="kpis" id="risk-kpis"></div>
+    <div class="card"><h3>Weekly Wins by Contact × Close</h3><div class="cap">Green cells clear break-even at current spend</div><div style="overflow-x:auto"><table id="risk-table"></table></div></div>
+    <div class="verdict"><h4>Risk Verdict</h4><p id="risk-verdict"></p></div>
+  </section>
+
+  <div class="note">
+    Live model — all values recalculate from the four inputs above. Pilot Path holds the $77,000 cap and lands exactly on 60 acquisitions.<br/>
+    Longevity Life Academy · CEO Planning Model · Built July 2026
+  </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
