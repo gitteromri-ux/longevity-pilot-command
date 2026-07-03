@@ -73,11 +73,14 @@ header{display:flex;align-items:center;justify-content:space-between;gap:20px;fl
 
 /* ---------- CONTROL BAR (draggable inputs) ---------- */
 .controls{
-  display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px;
-  padding:20px;border-radius:22px;background:var(--glass);border:1px solid var(--stroke-2);
+  display:grid;grid-template-columns:repeat(4,1fr);gap:16px 22px;margin-bottom:24px;
+  padding:44px 20px 20px;border-radius:22px;background:var(--glass);border:1px solid var(--stroke-2);
   backdrop-filter:blur(22px);
   box-shadow:0 2px 4px rgba(0,0,0,.3),0 20px 50px rgba(0,10,45,.5),inset 0 1px 0 rgba(255,255,255,.15);
   position:relative;overflow:hidden}
+.controls .ctrl-hint{position:absolute;top:15px;left:20px;font-size:11px;color:var(--muted);
+  text-transform:uppercase;letter-spacing:.08em;font-weight:600;display:flex;align-items:center;gap:8px}
+.controls .ctrl-hint::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--cyan);box-shadow:0 0 10px var(--cyan)}
 .controls::before{content:"";position:absolute;top:0;left:0;right:0;height:1px;
   background:linear-gradient(90deg,transparent,rgba(127,214,255,.7),transparent)}
 .ctrl label{display:flex;justify-content:space-between;align-items:baseline;font-size:12px;
@@ -96,8 +99,8 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bor
   background:radial-gradient(circle at 35% 30%,#fff,#cfe8ff 60%,#5aa9ff);
   box-shadow:0 2px 6px rgba(0,0,0,.5),0 0 18px rgba(127,214,255,.9)}
 .ctrl .range-labels{display:flex;justify-content:space-between;font-size:10px;color:var(--muted);margin-top:6px}
-.reset-btn{position:absolute;top:16px;right:18px;font-size:11px;color:var(--cyan);cursor:pointer;
-  padding:5px 11px;border-radius:9px;border:1px solid var(--stroke);background:rgba(90,169,255,.08);transition:.2s;font-weight:600}
+.reset-btn{position:absolute;top:11px;right:18px;font-size:11px;color:var(--cyan);cursor:pointer;
+  padding:5px 11px;border-radius:9px;border:1px solid var(--stroke);background:rgba(90,169,255,.08);transition:.2s;font-weight:600;z-index:5}
 .reset-btn:hover{background:rgba(90,169,255,.2);color:#fff}
 
 /* ---------- PANELS ---------- */
@@ -220,6 +223,7 @@ tr.hot td{background:rgba(0,190,255,.10)}
 
   <!-- CONTROL BAR -->
   <div class="controls">
+    <div class="ctrl-hint">Live model — drag any input to recalculate all tabs</div>
     <div class="reset-btn" id="reset">↺ Reset defaults</div>
     <div class="ctrl">
       <label>Weekly Spend <span class="val" id="v-spend">$5,800</span></label>
