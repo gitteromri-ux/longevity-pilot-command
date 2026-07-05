@@ -178,7 +178,7 @@ function renderRep(m){
   const tb=$('rep-table').querySelector('tbody');tb.innerHTML='';
   const dayList=[['Mon',wdSpend,true],['Tue',wdSpend,true],['Wed',wdSpend,true],['Thu',wdSpend,true],['Fri',wdSpend,true],['Sat',weSpend,false],['Sun',weSpend,false]];
   dayList.forEach(([d,sp,wd])=>{
-    const leads=(sp/m.cpl)*(1+BIO_RATIO);
+    const leads=sp/m.cpl;
     const contacted=leads*m.contact;
     const dials=wd?contacted*DIALS_PER_CONTACTED:0;
     tb.innerHTML+=`<tr><td>${d}</td><td>${fUSD(sp)}</td><td>${fN(leads,0)}</td><td>${fN(dials,0)}</td><td>${wd?fN(dials/REPS,0):'—'}</td><td>${wd?fN(dials/leads,1):'—'}</td></tr>`;
