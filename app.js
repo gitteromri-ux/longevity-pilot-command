@@ -5,21 +5,19 @@ const PILOT = {
   spentToDate: 37773, leadsToDate: 1521, acqToDate: 6,
   budgetCap: 77000, totalPilotSpend: 82773, target: 60,
   rows: [
-    {wk:1,spend:5000,leads:446,contact:.28,contacted:125.0,close:.0119,acq:1.49,cum:7.5,rev:1789,cpl:8.7,drd:258},
-    {wk:2,spend:5000,leads:446,contact:.31,contacted:138.3,close:.0147,acq:2.04,cum:9.5,rev:2442,cpl:9.6,drd:286},
-    {wk:3,spend:5000,leads:446,contact:.34,contacted:151.7,close:.0175,acq:2.65,cum:12.2,rev:3185,cpl:10.5,drd:314},
-    {wk:4,spend:5000,leads:446,contact:.37,contacted:165.1,close:.0207,acq:3.41,cum:15.6,rev:4097,cpl:11.5,drd:342},
-    {wk:5,spend:5000,leads:446,contact:.40,contacted:178.5,close:.0298,acq:5.32,cum:20.9,rev:6388,cpl:12.4,drd:369},
-    {wk:6,spend:5000,leads:446,contact:.42,contacted:187.4,close:.0378,acq:7.08,cum:28.0,rev:8496,cpl:13.0,drd:388},
-    {wk:7,spend:5000,leads:446,contact:.44,contacted:196.4,close:.0457,acq:8.98,cum:37.0,rev:10774,cpl:13.7,drd:406},
-    {wk:8,spend:5000,leads:446,contact:.45,contacted:200.8,close:.0537,acq:10.78,cum:47.8,rev:12936,cpl:14.0,drd:415},
-    {wk:9,spend:5000,leads:446,contact:.46,contacted:205.3,close:.0596,acq:12.24,cum:60.0,rev:14692,cpl:14.3,drd:425}
+    {wk:1,spend:5000,leads:312,paid:219,bio:94,contact:0.28,contacted:87.5,close:0.0170,acq:1.49,cum:7.5,rev:1789,dials:2715,cpl:8.7,drd:181},
+    {wk:2,spend:5000,leads:312,paid:219,bio:94,contact:0.31,contacted:96.9,close:0.0210,acq:2.04,cum:9.5,rev:2442,dials:3005,cpl:9.6,drd:200},
+    {wk:3,spend:5000,leads:312,paid:219,bio:94,contact:0.34,contacted:106.3,close:0.0250,acq:2.65,cum:12.2,rev:3185,dials:3296,cpl:10.5,drd:220},
+    {wk:4,spend:5000,leads:312,paid:219,bio:94,contact:0.37,contacted:115.6,close:0.0295,acq:3.41,cum:15.6,rev:4097,dials:3587,cpl:11.5,drd:239},
+    {wk:5,spend:5000,leads:312,paid:219,bio:94,contact:0.40,contacted:125.0,close:0.0426,acq:5.32,cum:20.9,rev:6388,dials:3878,cpl:12.4,drd:259},
+    {wk:6,spend:5000,leads:312,paid:219,bio:94,contact:0.42,contacted:131.2,close:0.0539,acq:7.08,cum:28.0,rev:8496,dials:4072,cpl:13.0,drd:271},
+    {wk:7,spend:5000,leads:312,paid:219,bio:94,contact:0.44,contacted:137.5,close:0.0653,acq:8.98,cum:37.0,rev:10774,dials:4266,cpl:13.7,drd:284},
+    {wk:8,spend:5000,leads:312,paid:219,bio:94,contact:0.45,contacted:140.6,close:0.0767,acq:10.78,cum:47.8,rev:12936,dials:4363,cpl:14.0,drd:291},
+    {wk:9,spend:5000,leads:312,paid:219,bio:94,contact:0.46,contacted:143.8,close:0.0852,acq:12.24,cum:60.0,rev:14692,dials:4460,cpl:14.3,drd:297}
   ],
-  jul:{spend:20000,leads:1785,acq:9.6,rev:11513,cum:15.6,avgclose:.0165},
-  aug:{spend:62773,leads:2231,acq:50.4,rev:60480,cum:60.0,avgclose:.0459}
+  jul:{spend:20000,leads:1250,acq:9.6,rev:11513,cum:15.6,avgclose:0.0236},
+  aug:{spend:25000,leads:1562,acq:44.4,rev:53287,cum:60.0,avgclose:0.0655}
 };
-// Note: Aug spend shown as remaining-through-end (wk5-9 = $25k) but budget context $82,773 total.
-PILOT.aug = {spend:25000,leads:2231,acq:44.4,rev:53287,cum:60.0,avgclose:.0459};
 
 // ---- constants ----
 // Model convention (matches original dashboard): total leads = spend / cpl.
@@ -261,7 +259,40 @@ function renderRisk(m){
 
 // ============ TAB: PILOT PATH ============
 let pilotBuilt=false;
+function renderJulyWeeks(){
+  const weekDates=['Jul 3–9','Jul 10–16','Jul 17–23','Jul 24–31'];
+  const jul=PILOT.rows.slice(0,4);
+  const el=document.getElementById('july-weeks');if(!el)return;
+  el.innerHTML=jul.map((r,i)=>{
+    const paidCPL=r.spend/r.paid;
+    const check=`Convert <b>${(r.close*100).toFixed(2)}%</b> of ${fN(r.contacted,0)} contacted → <b>${fN(r.acq,1)} wins</b>`;
+    return `<div class="wk-card">
+      <div class="wk-top">
+        <div class="wk-badge">
+          <div class="wk-num">W${r.wk}</div>
+          <div class="wl">Week ${r.wk}<b>${weekDates[i]}</b></div>
+        </div>
+        <div class="wk-acq"><div class="a">${fN(r.acq,1)}</div><div class="al">acq</div></div>
+      </div>
+      <div class="wk-rows">
+        <div class="wk-row"><span class="k">Spend</span><span class="v hi">${fUSD(r.spend)}</span></div>
+        <div class="wk-row"><span class="k">Leads (paid + bio)</span><span class="v">${fN(r.leads,0)} <span style="color:var(--muted);font-weight:400">(${fN(r.paid,0)}+${fN(r.bio,0)})</span></span></div>
+        <div class="wk-row"><span class="k">Contact rate</span><span class="v">${(r.contact*100).toFixed(0)}%</span></div>
+        <div class="wk-row"><span class="k">Contacted / wk</span><span class="v">${fN(r.contacted,1)}</span></div>
+        <div class="wk-row"><span class="k">Close rate</span><span class="v">${(r.close*100).toFixed(2)}%</span></div>
+        <div class="wk-row"><span class="k">Revenue</span><span class="v hi">${fUSD(r.rev)}</span></div>
+        <div class="wk-row"><span class="k">Dials / week</span><span class="v">${fN(r.dials,0)}</span></div>
+        <div class="wk-row"><span class="k">Calls / lead</span><span class="v">${fN(r.cpl,1)}</span></div>
+        <div class="wk-row"><span class="k">Dials / rep / day</span><span class="v">${fN(r.drd,0)}</span></div>
+      </div>
+      <div class="wk-check"><span class="ci"></span><span>${check}</span></div>
+      <div class="wk-cum"><span class="cn">${fN(r.cum,1)}</span><span class="ct">cumulative acq · target 60 by Sep 1</span></div>
+    </div>`;
+  }).join('');
+}
+
 function renderPilot(){
+  renderJulyWeeks();
   // weekly table
   const tb=document.querySelector('#pilot-weekly tbody');tb.innerHTML='';
   PILOT.rows.forEach(r=>{

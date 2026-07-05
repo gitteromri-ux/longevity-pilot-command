@@ -179,6 +179,48 @@ tr.hot td{background:rgba(0,190,255,.10)}
 .legend-row span{display:flex;align-items:center;gap:7px}
 .dot{width:11px;height:11px;border-radius:3px}
 
+/* ---- July week cards ---- */
+.month-head{display:flex;align-items:center;gap:14px;margin:6px 0 4px}
+.month-head h3{font-family:'Manrope';font-weight:800;font-size:20px;letter-spacing:-.02em}
+.month-pill{font-size:11px;color:var(--cyan);padding:5px 12px;border-radius:20px;
+  background:rgba(0,208,255,.1);border:1px solid rgba(0,208,255,.25);font-weight:600;letter-spacing:.02em}
+.week-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.wk-card{position:relative;border-radius:20px;padding:18px;
+  background:linear-gradient(165deg,rgba(22,40,90,.72),rgba(9,18,46,.8));
+  border:1px solid var(--stroke);backdrop-filter:blur(18px);
+  box-shadow:0 2px 4px rgba(0,0,0,.3),0 16px 42px rgba(0,10,45,.5),inset 0 1px 0 rgba(255,255,255,.13);
+  transition:transform .3s,box-shadow .3s;overflow:hidden}
+.wk-card:hover{transform:translateY(-5px);
+  box-shadow:0 6px 12px rgba(0,0,0,.35),0 28px 64px rgba(0,20,70,.62),0 0 44px rgba(0,190,255,.22),inset 0 1px 0 rgba(255,255,255,.2)}
+.wk-card::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,var(--blue),var(--cyan));opacity:.85}
+.wk-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.wk-badge{display:flex;align-items:center;gap:9px}
+.wk-num{width:34px;height:34px;border-radius:11px;flex:none;display:grid;place-items:center;
+  font-family:'Manrope';font-weight:800;font-size:15px;color:#fff;
+  background:linear-gradient(145deg,#2f6bff,#1e49c8);
+  box-shadow:0 4px 12px rgba(47,107,255,.5),inset 0 1px 0 rgba(255,255,255,.4)}
+.wk-badge .wl{font-size:11px;color:var(--sub);text-transform:uppercase;letter-spacing:.05em;font-weight:600;line-height:1.3}
+.wk-badge .wl b{display:block;color:#fff;font-size:12px;font-weight:700}
+.wk-acq{text-align:right}
+.wk-acq .a{font-family:'Manrope';font-weight:800;font-size:24px;color:var(--cyan);text-shadow:0 0 18px rgba(0,208,255,.6);line-height:1}
+.wk-acq .al{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-top:3px}
+.wk-rows{display:flex;flex-direction:column;gap:2px;margin-bottom:12px}
+.wk-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid rgba(120,170,255,.08);font-size:12px}
+.wk-row:last-child{border-bottom:none}
+.wk-row .k{color:var(--sub)}
+.wk-row .v{color:var(--ice);font-weight:600;font-family:'Manrope'}
+.wk-row .v.hi{color:#fff}
+.wk-check{display:flex;align-items:center;gap:8px;padding:9px 11px;border-radius:12px;font-size:11.5px;line-height:1.4;
+  background:rgba(0,208,255,.08);border:1px solid rgba(0,208,255,.2)}
+.wk-check .ci{width:9px;height:9px;border-radius:50%;flex:none;background:var(--cyan);box-shadow:0 0 9px var(--cyan)}
+.wk-check b{color:#fff}
+.wk-cum{display:flex;align-items:baseline;gap:6px;margin-top:11px;padding-top:11px;border-top:1px dashed rgba(120,170,255,.18)}
+.wk-cum .cn{font-family:'Manrope';font-weight:800;font-size:17px;color:#fff}
+.wk-cum .ct{font-size:11px;color:var(--muted)}
+@media(max-width:1050px){.week-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){.week-grid{grid-template-columns:1fr}}
+
 .note{font-size:12px;color:var(--muted);margin-top:26px;text-align:center;line-height:1.6}
 .foot-flag{display:inline-flex;align-items:center;gap:8px;padding:8px 16px;border-radius:12px;
   background:rgba(56,224,168,.1);border:1px solid rgba(56,224,168,.3);color:var(--good);font-weight:600;font-size:13px;margin-top:6px}
@@ -251,18 +293,26 @@ tr.hot td{background:rgba(0,190,255,.10)}
   <section class="panel active" id="p-pilot">
     <div class="panel-head">
       <h2>Pilot Path — From 6 Wins Today to 60 by Sep 1</h2>
-      <p>The full 60-day runway on the remaining pilot budget. Spend holds at $5k/week until the <b>$77k cap</b> is exhausted (~8 weeks). Reps stay at 3, but contact rate ramps <b>28% → 45%</b> and close rate climbs steadily — with the final 4 weeks at much higher conversion to land <b>exactly 60 acquisitions</b>.</p>
+      <p>The full 60-day runway. Spend holds at <b>$5k/week for 9 weeks</b> (Jul 3 → Sep 1). Reps stay at 3, but contact rate ramps <b>28% → 46%</b> and close rate climbs steadily — with the final 4 weeks at much higher conversion to land <b>exactly 60 acquisitions</b>. Total pilot spend ~$82,773.</p>
     </div>
 
     <div class="kpis">
       <div class="kpi"><div class="lab">Spent to Date</div><div class="num">$37,773</div><div class="sub">Jun 1 → Jul 2</div></div>
       <div class="kpi bad"><div class="lab">Acq to Date</div><div class="num">6</div><div class="sub">of 60 target</div></div>
       <div class="kpi accent"><div class="lab">Budget Remaining</div><div class="num">$39,227</div><div class="sub">of $77k cap</div></div>
-      <div class="kpi good"><div class="lab">Acq Still Needed</div><div class="num">54</div><div class="sub">in ~8 weeks</div></div>
-      <div class="kpi"><div class="lab">Runway</div><div class="num">8.6 wks</div><div class="sub">Jul 3 → Sep 1</div></div>
+      <div class="kpi good"><div class="lab">Acq Still Needed</div><div class="num">54</div><div class="sub">in 9 weeks</div></div>
+      <div class="kpi"><div class="lab">Runway</div><div class="num">9 wks</div><div class="sub">Jul 3 → Sep 1</div></div>
     </div>
 
-    <div class="grid g2" style="margin-bottom:18px">
+    <!-- JULY WEEK-BY-WEEK DETAIL -->
+    <div class="month-head">
+      <h3>July — Week by Week</h3>
+      <span class="month-pill">This month · 4 weeks · Weeks 1–4 of the pilot</span>
+    </div>
+    <div class="cap" style="margin:-6px 0 16px 2px;color:var(--muted)">Full funnel per week with the plan checkpoint each week must clear. July is the deliberate ramp phase — momentum builds here so August can carry the target.</div>
+    <div class="week-grid" id="july-weeks"></div>
+
+    <div class="grid g2" style="margin:22px 0 18px">
       <div class="card">
         <h3>Cumulative Acquisitions — The Climb to 60</h3>
         <div class="cap">Actual to date, then the weekly forward plan compounding to the target</div>
@@ -281,7 +331,7 @@ tr.hot td{background:rgba(0,190,255,.10)}
 
     <div class="card" style="margin-bottom:18px">
       <h3>Weekly Battle Plan — Every Metric to Hit 60</h3>
-      <div class="cap">Weeks 1–4 = July · Weeks 5–8 = August · Week 8 is a partial week (budget cap)</div>
+      <div class="cap">Weeks 1–4 = July · Weeks 5–9 = August · all weeks at $5k spend</div>
       <div style="overflow-x:auto">
         <table id="pilot-weekly">
           <thead><tr>
