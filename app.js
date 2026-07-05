@@ -5,18 +5,18 @@ const PILOT = {
   spentToDate: 37773, leadsToDate: 1521, acqToDate: 6,
   budgetCap: 77000, totalPilotSpend: 82773, target: 60,
   rows: [
-    {wk:1,spend:5000,leads:312,paid:219,bio:94,contact:0.28,contacted:87.5,close:0.0170,acq:1.49,cum:7.5,rev:1789,dials:2715,cpl:8.7,drd:181},
-    {wk:2,spend:5000,leads:312,paid:219,bio:94,contact:0.31,contacted:96.9,close:0.0210,acq:2.04,cum:9.5,rev:2442,dials:3005,cpl:9.6,drd:200},
-    {wk:3,spend:5000,leads:312,paid:219,bio:94,contact:0.34,contacted:106.3,close:0.0250,acq:2.65,cum:12.2,rev:3185,dials:3296,cpl:10.5,drd:220},
-    {wk:4,spend:5000,leads:312,paid:219,bio:94,contact:0.37,contacted:115.6,close:0.0295,acq:3.41,cum:15.6,rev:4097,dials:3587,cpl:11.5,drd:239},
-    {wk:5,spend:5000,leads:312,paid:219,bio:94,contact:0.40,contacted:125.0,close:0.0426,acq:5.32,cum:20.9,rev:6388,dials:3878,cpl:12.4,drd:259},
-    {wk:6,spend:5000,leads:312,paid:219,bio:94,contact:0.42,contacted:131.2,close:0.0539,acq:7.08,cum:28.0,rev:8496,dials:4072,cpl:13.0,drd:271},
-    {wk:7,spend:5000,leads:312,paid:219,bio:94,contact:0.44,contacted:137.5,close:0.0653,acq:8.98,cum:37.0,rev:10774,dials:4266,cpl:13.7,drd:284},
-    {wk:8,spend:5000,leads:312,paid:219,bio:94,contact:0.45,contacted:140.6,close:0.0767,acq:10.78,cum:47.8,rev:12936,dials:4363,cpl:14.0,drd:291},
-    {wk:9,spend:5000,leads:312,paid:219,bio:94,contact:0.46,contacted:143.8,close:0.0852,acq:12.24,cum:60.0,rev:14692,dials:4460,cpl:14.3,drd:297}
+    {wk:1,mo:'jul',spend:5000,leads:312,paid:219,bio:94,contact:0.30,contacted:93.8,close:0.0373,acq:3.5,cum:9.5,rev:4200,dials:2907,cpl:9.3,drd:194},
+    {wk:2,mo:'jul',spend:5000,leads:312,paid:219,bio:94,contact:0.33,contacted:103.1,close:0.0436,acq:4.5,cum:14.0,rev:5400,dials:3198,cpl:10.2,drd:213},
+    {wk:3,mo:'jul',spend:5000,leads:312,paid:219,bio:94,contact:0.36,contacted:112.5,close:0.0489,acq:5.5,cum:19.5,rev:6600,dials:3489,cpl:11.2,drd:233},
+    {wk:4,mo:'jul',spend:5000,leads:312,paid:219,bio:94,contact:0.39,contacted:121.9,close:0.0533,acq:6.5,cum:26.0,rev:7800,dials:3780,cpl:12.1,drd:252},
+    {wk:5,mo:'aug',spend:5000,leads:312,paid:219,bio:94,contact:0.42,contacted:131.2,close:0.0533,acq:7.0,cum:33.0,rev:8400,dials:4072,cpl:13.0,drd:271},
+    {wk:6,mo:'aug',spend:5000,leads:312,paid:219,bio:94,contact:0.44,contacted:137.5,close:0.0567,acq:7.8,cum:40.8,rev:9360,dials:4266,cpl:13.7,drd:284},
+    {wk:7,mo:'aug',spend:5000,leads:312,paid:219,bio:94,contact:0.46,contacted:143.8,close:0.0598,acq:8.6,cum:49.4,rev:10320,dials:4460,cpl:14.3,drd:297},
+    {wk:8,mo:'aug',spend:5000,leads:312,paid:219,bio:94,contact:0.47,contacted:146.9,close:0.0626,acq:9.2,cum:58.6,rev:11040,dials:4557,cpl:14.6,drd:304},
+    {wk:9,mo:'aug',spend:5000,leads:312,paid:219,bio:94,contact:0.48,contacted:150.0,close:0.0627,acq:9.4,cum:68.0,rev:11280,dials:4653,cpl:14.9,drd:310}
   ],
-  jul:{spend:20000,leads:1250,acq:9.6,rev:11513,cum:15.6,avgclose:0.0236},
-  aug:{spend:25000,leads:1562,acq:44.4,rev:53287,cum:60.0,avgclose:0.0655}
+  jul:{spend:20000,leads:1250,acq:20.0,rev:24000,cum:26.0,avgclose:0.0464},
+  aug:{spend:25000,leads:1562,acq:42.0,rev:50400,cum:68.0,avgclose:0.0592}
 };
 
 // ---- constants ----
@@ -259,49 +259,52 @@ function renderRisk(m){
 
 // ============ TAB: PILOT PATH ============
 let pilotBuilt=false;
-function renderJulyWeeks(){
-  const weekDates=['Jul 3–9','Jul 10–16','Jul 17–23','Jul 24–31'];
-  const jul=PILOT.rows.slice(0,4);
-  const el=document.getElementById('july-weeks');if(!el)return;
-  el.innerHTML=jul.map((r,i)=>{
-    const paidCPL=r.spend/r.paid;
-    const check=`Convert <b>${(r.close*100).toFixed(2)}%</b> of ${fN(r.contacted,0)} contacted → <b>${fN(r.acq,1)} wins</b>`;
-    return `<div class="wk-card">
+function weekCard(r,dateStr){
+  const cls=r.mo; // 'jul' or 'aug' -> drives color theme
+  return `<div class="wk-card ${cls}">
       <div class="wk-top">
         <div class="wk-badge">
           <div class="wk-num">W${r.wk}</div>
-          <div class="wl">Week ${r.wk}<b>${weekDates[i]}</b></div>
+          <div class="wl">Week ${r.wk}<b>${dateStr}</b></div>
         </div>
-        <div class="wk-acq"><div class="a">${fN(r.acq,1)}</div><div class="al">acq</div></div>
+        <div class="wk-acq"><div class="a">${fN(r.acq,1)}</div><div class="al">Acquisitions</div></div>
       </div>
       <div class="wk-rows">
-        <div class="wk-row"><span class="k">Spend</span><span class="v hi">${fUSD(r.spend)}</span></div>
-        <div class="wk-row"><span class="k">Leads (paid + bio)</span><span class="v">${fN(r.leads,0)} <span style="color:var(--muted);font-weight:400">(${fN(r.paid,0)}+${fN(r.bio,0)})</span></span></div>
-        <div class="wk-row"><span class="k">Contact rate</span><span class="v">${(r.contact*100).toFixed(0)}%</span></div>
-        <div class="wk-row"><span class="k">Contacted / wk</span><span class="v">${fN(r.contacted,1)}</span></div>
-        <div class="wk-row"><span class="k">Close rate</span><span class="v">${(r.close*100).toFixed(2)}%</span></div>
+        <div class="wk-row"><span class="k">Ad Spend</span><span class="v hi">${fUSD(r.spend)}</span></div>
+        <div class="wk-row"><span class="k">Leads (Paid + Bio)</span><span class="v">${fN(r.leads,0)} <span style="color:var(--muted);font-weight:500">(${fN(r.paid,0)} + ${fN(r.bio,0)})</span></span></div>
+        <div class="wk-row"><span class="k">Contact Rate</span><span class="v">${(r.contact*100).toFixed(0)}%</span></div>
+        <div class="wk-row"><span class="k">Contacted Leads</span><span class="v">${fN(r.contacted,0)}</span></div>
+        <div class="wk-row"><span class="k">Close Rate</span><span class="v">${(r.close*100).toFixed(2)}%</span></div>
         <div class="wk-row"><span class="k">Revenue</span><span class="v hi">${fUSD(r.rev)}</span></div>
-        <div class="wk-row"><span class="k">Dials / week</span><span class="v">${fN(r.dials,0)}</span></div>
-        <div class="wk-row"><span class="k">Calls / lead</span><span class="v">${fN(r.cpl,1)}</span></div>
-        <div class="wk-row"><span class="k">Dials / rep / day</span><span class="v">${fN(r.drd,0)}</span></div>
+        <div class="wk-row"><span class="k">Dials per Week</span><span class="v">${fN(r.dials,0)}</span></div>
+        <div class="wk-row"><span class="k">Calls per Lead</span><span class="v">${fN(r.cpl,1)}</span></div>
+        <div class="wk-row"><span class="k">Dials per Rep per Day</span><span class="v">${fN(r.drd,0)}</span></div>
       </div>
-      <div class="wk-check"><span class="ci"></span><span>${check}</span></div>
-      <div class="wk-cum"><span class="cn">${fN(r.cum,1)}</span><span class="ct">cumulative acq · target 60 by Sep 1</span></div>
+      <div class="wk-check"><span class="ci"></span><span>Convert <b>${(r.close*100).toFixed(2)}%</b> of ${fN(r.contacted,0)} contacted &rarr; <b>${fN(r.acq,1)} acquisitions</b></span></div>
+      <div class="wk-cum"><span class="cn">${fN(r.cum,1)}</span><span class="ct">Cumulative Acquisitions</span></div>
     </div>`;
-  }).join('');
+}
+function renderWeeks(){
+  const julDates=['Jul 3–9','Jul 10–16','Jul 17–23','Jul 24–31'];
+  const augDates=['Aug 1–7','Aug 8–14','Aug 15–21','Aug 22–28','Aug 29–Sep 1'];
+  const jul=PILOT.rows.filter(r=>r.mo==='jul');
+  const aug=PILOT.rows.filter(r=>r.mo==='aug');
+  const jEl=document.getElementById('july-weeks');
+  if(jEl)jEl.innerHTML=jul.map((r,i)=>weekCard(r,julDates[i])).join('');
+  const aEl=document.getElementById('aug-weeks');
+  if(aEl)aEl.innerHTML=aug.map((r,i)=>weekCard(r,augDates[i])).join('');
 }
 
 function renderPilot(){
-  renderJulyWeeks();
+  renderWeeks();
   // weekly table
   const tb=document.querySelector('#pilot-weekly tbody');tb.innerHTML='';
   PILOT.rows.forEach(r=>{
-    const hot=r.wk>=6;
-    tb.innerHTML+=`<tr class="${hot?'hot':''}">
-      <td><b>${r.wk}</b>${r.wk===4?' <span class="tag blue">Jul</span>':''}${r.wk===9?' <span class="tag blue">Sep 1</span>':''}</td>
+    tb.innerHTML+=`<tr class="mo-${r.mo}">
+      <td><b>${r.wk}</b> <span class="tag ${r.mo==='jul'?'blue':'cyan'}">${r.mo==='jul'?'Jul':'Aug'}</span></td>
       <td>${fUSD(r.spend)}</td><td>${fN(r.leads,0)}</td>
-      <td>${(r.contact*100).toFixed(0)}%</td><td>${fN(r.contacted,1)}</td>
-      <td>${(r.close*100).toFixed(2)}%</td><td>${fN(r.acq,2)}</td>
+      <td>${(r.contact*100).toFixed(0)}%</td><td>${fN(r.contacted,0)}</td>
+      <td>${(r.close*100).toFixed(2)}%</td><td>${fN(r.acq,1)}</td>
       <td><b>${fN(r.cum,1)}</b></td><td>${fUSD(r.rev)}</td>
       <td>${fN(r.cpl,1)}</td><td>${fN(r.drd,0)}</td></tr>`;
   });
@@ -309,10 +312,10 @@ function renderPilot(){
   const mt=document.querySelector('#pilot-month tbody');
   mt.innerHTML=`
     <tr><td><b>To Date</b> (Jun)</td><td>${fUSD(PILOT.spentToDate)}</td><td>${fN(PILOT.leadsToDate,0)}</td><td>${PILOT.acqToDate}</td><td>${PILOT.acqToDate}</td><td>${fUSD(PILOT.acqToDate*PRICE)}</td><td>—</td></tr>
-    <tr><td><b>July</b> (wk 1–4)</td><td>${fUSD(PILOT.jul.spend)}</td><td>${fN(PILOT.jul.leads,0)}</td><td>+${fN(PILOT.jul.acq,1)}</td><td>${fN(PILOT.jul.cum,1)}</td><td>${fUSD(PILOT.jul.rev)}</td><td>${fPct(PILOT.jul.avgclose)}</td></tr>
-    <tr class="hot"><td><b>August</b> (wk 5–9)</td><td>${fUSD(PILOT.aug.spend)}</td><td>${fN(PILOT.aug.leads,0)}</td><td>+${fN(PILOT.aug.acq,1)}</td><td><b>${fN(PILOT.aug.cum,0)}</b></td><td>${fUSD(PILOT.aug.rev)}</td><td>${fPct(PILOT.aug.avgclose)}</td></tr>`;
-  $('pilot-flag').innerHTML=`✓ Lands exactly on 60 acq · $82,773 total pilot spend`;
-  $('pilot-verdict').innerHTML=`Six acquisitions in month one is not the run-rate — it's the cold-start. The plan front-loads <b>contact rate (28% → 46%)</b> while close rate compounds, so momentum builds: July adds <b>~${fN(PILOT.jul.acq,0)} wins</b> (cum ${fN(PILOT.jul.cum,0)}), then August's higher-conversion weeks deliver <b>~${fN(PILOT.aug.acq,0)} more</b> to land exactly on <b>60</b>. Reps hold at 3 but dial harder — from <b>~8.7 to ~14.3 calls per lead</b> — as contact climbs. The final four weeks carry the target: they must convert at <b>3.8% → 6.0%</b> of contacted, roughly triple the early-pilot rate. That's the number to defend. Total spend runs <b>$82,773</b>, ~$5.8k over the original $77k envelope — the agreed trade to hit 60 exactly.`;
+    <tr class="mo-jul"><td><b>July</b> (Weeks 1–4)</td><td>${fUSD(PILOT.jul.spend)}</td><td>${fN(PILOT.jul.leads,0)}</td><td>+${fN(PILOT.jul.acq,0)}</td><td>${fN(PILOT.jul.cum,0)}</td><td>${fUSD(PILOT.jul.rev)}</td><td>${fPct(PILOT.jul.avgclose)}</td></tr>
+    <tr class="mo-aug"><td><b>August</b> (Weeks 5–9)</td><td>${fUSD(PILOT.aug.spend)}</td><td>${fN(PILOT.aug.leads,0)}</td><td>+${fN(PILOT.aug.acq,0)}</td><td><b>${fN(PILOT.aug.cum,0)}</b></td><td>${fUSD(PILOT.aug.rev)}</td><td>${fPct(PILOT.aug.avgclose)}</td></tr>`;
+  $('pilot-flag').innerHTML=`July 20 Acquisitions · August 42 Acquisitions · $82,773 Total Spend`;
+  $('pilot-verdict').innerHTML=`The plan splits the runway into two clearly separated months. <b>July (Weeks 1–4)</b> is the ramp: contact rate rises <b>30% → 39%</b> and close rate climbs <b>3.73% → 5.33%</b>, delivering <b>20 acquisitions</b> and taking the cumulative from 6 to <b>26</b>. <b>August (Weeks 5–9)</b> is the high-conversion push: contact reaches <b>48%</b> and close holds above <b>5.3%</b>, adding <b>42 acquisitions</b> to finish at <b>68</b>. Reps stay at 3 but dial harder — from <b>9.3 to 14.9 calls per lead</b> — as contact climbs. Total spend is <b>$82,773</b> across both months.`;
 
   if(pilotBuilt)return;pilotBuilt=true;
   const R=PILOT.rows;
@@ -336,8 +339,8 @@ function renderPilot(){
       y1:{position:'right',grid:{display:false},ticks:{callback:v=>v+'%'},title:{display:true,text:'Close',color:CYAN}}},
     plugins:{legend:{display:false}}}});
   // month bar
-  mk('c-pilot-month',{type:'bar',data:{labels:['July (wk1–4)','August (wk5–9)'],datasets:[
-    {label:'Acquisitions',data:[PILOT.jul.acq,PILOT.aug.acq],backgroundColor:['rgba(90,169,255,.85)','rgba(0,208,255,.9)'],borderRadius:10,yAxisID:'y'},
+  mk('c-pilot-month',{type:'bar',data:{labels:['July (Weeks 1–4)','August (Weeks 5–9)'],datasets:[
+    {label:'Acquisitions',data:[PILOT.jul.acq,PILOT.aug.acq],backgroundColor:['rgba(90,169,255,.9)','rgba(0,208,255,.9)'],borderRadius:10,yAxisID:'y'},
     {label:'Spend',type:'line',data:[PILOT.jul.spend,PILOT.aug.spend],borderColor:GOOD,borderWidth:3,pointRadius:4,pointBackgroundColor:GOOD,yAxisID:'y1'}
   ]},options:{responsive:true,maintainAspectRatio:false,scales:{
     x:{grid:GRID},

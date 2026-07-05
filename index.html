@@ -108,8 +108,8 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bor
 .panel.active{display:block}
 @keyframes fade{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
 .panel-head{margin-bottom:18px}
-.panel-head h2{font-family:'Manrope';font-weight:800;font-size:26px;letter-spacing:-.03em;line-height:1.1}
-.panel-head p{color:var(--sub);font-size:14px;margin-top:6px;max-width:760px;line-height:1.5}
+.panel-head h2{font-family:'Manrope';font-weight:800;font-size:32px;letter-spacing:-.03em;line-height:1.1}
+.panel-head p{color:var(--sub);font-size:15.5px;margin-top:8px;max-width:820px;line-height:1.55}
 
 /* KPI cards */
 .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin-bottom:22px}
@@ -122,10 +122,15 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bor
   box-shadow:0 4px 8px rgba(0,0,0,.35),0 26px 60px rgba(0,20,70,.6),0 0 40px rgba(47,107,255,.25),inset 0 1px 0 rgba(255,255,255,.2)}
 .kpi::before{content:"";position:absolute;top:-40%;right:-30%;width:160px;height:160px;border-radius:50%;
   background:radial-gradient(circle,rgba(90,169,255,.28),transparent 70%);pointer-events:none}
-.kpi .lab{font-size:11px;color:var(--sub);text-transform:uppercase;letter-spacing:.08em;font-weight:600}
-.kpi .num{font-family:'Manrope';font-weight:800;font-size:30px;letter-spacing:-.03em;margin:8px 0 4px;
+.kpi .lab{font-size:13px;color:var(--sub);text-transform:uppercase;letter-spacing:.06em;font-weight:700}
+.kpi .num{font-family:'Manrope';font-weight:800;font-size:36px;letter-spacing:-.03em;margin:8px 0 4px;
   color:#fff;text-shadow:0 0 20px rgba(90,169,255,.45)}
-.kpi .sub{font-size:12px;color:var(--muted)}
+.kpi .sub{font-size:13px;color:var(--sub)}
+/* month-tinted KPI cards */
+.kpi.mo-jul{border-color:rgba(90,169,255,.55);background:linear-gradient(160deg,rgba(34,64,150,.78),rgba(12,28,72,.7))}
+.kpi.mo-jul .num{color:var(--blue-lt);text-shadow:0 0 22px rgba(90,169,255,.7)}
+.kpi.mo-aug{border-color:rgba(0,208,255,.5);background:linear-gradient(160deg,rgba(6,72,96,.72),rgba(8,30,58,.72))}
+.kpi.mo-aug .num{color:var(--cyan);text-shadow:0 0 22px rgba(0,208,255,.75)}
 .kpi.accent .num{color:var(--cyan);text-shadow:0 0 22px rgba(127,214,255,.7)}
 .kpi.good .num{color:var(--good);text-shadow:0 0 20px rgba(56,224,168,.5)}
 .kpi.warn .num{color:var(--warn);text-shadow:0 0 20px rgba(255,181,71,.5)}
@@ -139,8 +144,8 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bor
   background:linear-gradient(160deg,rgba(18,34,80,.6),rgba(9,18,46,.7));
   border:1px solid var(--stroke);backdrop-filter:blur(18px);
   box-shadow:0 2px 4px rgba(0,0,0,.3),0 16px 44px rgba(0,10,45,.45),inset 0 1px 0 rgba(255,255,255,.12)}
-.card h3{font-family:'Manrope';font-weight:700;font-size:15px;margin-bottom:4px;letter-spacing:-.01em}
-.card .cap{font-size:12px;color:var(--muted);margin-bottom:14px}
+.card h3{font-family:'Manrope';font-weight:800;font-size:19px;margin-bottom:4px;letter-spacing:-.01em}
+.card .cap{font-size:13.5px;color:var(--sub);margin-bottom:14px}
 .chart-box{position:relative;height:280px}
 .chart-box.tall{height:340px}
 .verdict{margin-top:18px;padding:18px 20px;border-radius:18px;
@@ -155,15 +160,23 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bor
 table{width:100%;border-collapse:collapse;font-size:13px}
 th,td{padding:11px 12px;text-align:right;border-bottom:1px solid rgba(120,170,255,.1)}
 th:first-child,td:first-child{text-align:left}
-th{font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--sub);font-weight:600}
-td{color:var(--ice)}
+table{font-size:14px}
+th,td{padding:12px 12px}
+th{font-size:12.5px;text-transform:uppercase;letter-spacing:.04em;color:var(--sub);font-weight:700}
+td{color:var(--ice);font-size:14px}
 tr:hover td{background:rgba(90,169,255,.06)}
 .tag{display:inline-block;padding:3px 9px;border-radius:8px;font-size:11px;font-weight:700}
 .tag.good{background:rgba(56,224,168,.16);color:var(--good)}
 .tag.warn{background:rgba(255,181,71,.16);color:var(--warn)}
 .tag.bad{background:rgba(255,93,108,.16);color:var(--bad)}
-.tag.blue{background:rgba(90,169,255,.16);color:var(--blue-lt)}
+.tag.blue{background:rgba(90,169,255,.18);color:var(--blue-lt)}
+.tag.cyan{background:rgba(0,208,255,.18);color:var(--cyan)}
 tr.hot td{background:rgba(0,190,255,.10)}
+/* month-tinted table rows */
+tr.mo-jul td{background:rgba(90,169,255,.07)}
+tr.mo-jul:hover td{background:rgba(90,169,255,.14)}
+tr.mo-aug td{background:rgba(0,208,255,.07)}
+tr.mo-aug:hover td{background:rgba(0,208,255,.14)}
 
 /* gauges */
 .gauges{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
@@ -180,11 +193,18 @@ tr.hot td{background:rgba(0,190,255,.10)}
 .dot{width:11px;height:11px;border-radius:3px}
 
 /* ---- July week cards ---- */
-.month-head{display:flex;align-items:center;gap:14px;margin:6px 0 4px}
-.month-head h3{font-family:'Manrope';font-weight:800;font-size:20px;letter-spacing:-.02em}
-.month-pill{font-size:11px;color:var(--cyan);padding:5px 12px;border-radius:20px;
-  background:rgba(0,208,255,.1);border:1px solid rgba(0,208,255,.25);font-weight:600;letter-spacing:.02em}
+.month-head{display:flex;align-items:center;gap:14px;margin:6px 0 4px;padding-left:14px;position:relative}
+.month-head::before{content:"";position:absolute;left:0;top:3px;bottom:3px;width:5px;border-radius:4px}
+.month-head.jul::before{background:linear-gradient(180deg,#5aa9ff,#2f6bff);box-shadow:0 0 16px rgba(90,169,255,.8)}
+.month-head.aug::before{background:linear-gradient(180deg,#00d0ff,#0088cc);box-shadow:0 0 16px rgba(0,208,255,.8)}
+.month-head h3{font-family:'Manrope';font-weight:800;font-size:26px;letter-spacing:-.02em}
+.month-head.jul h3{color:#bcdcff}
+.month-head.aug h3{color:#b7f0ff}
+.month-pill{font-size:13px;padding:6px 14px;border-radius:20px;font-weight:700;letter-spacing:.02em}
+.month-pill.jul{color:#cfe4ff;background:rgba(90,169,255,.14);border:1px solid rgba(90,169,255,.4)}
+.month-pill.aug{color:#c8f4ff;background:rgba(0,208,255,.12);border:1px solid rgba(0,208,255,.4)}
 .week-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.week-grid.five{grid-template-columns:repeat(5,1fr)}
 .wk-card{position:relative;border-radius:20px;padding:18px;
   background:linear-gradient(165deg,rgba(22,40,90,.72),rgba(9,18,46,.8));
   border:1px solid var(--stroke);backdrop-filter:blur(18px);
@@ -192,34 +212,49 @@ tr.hot td{background:rgba(0,190,255,.10)}
   transition:transform .3s,box-shadow .3s;overflow:hidden}
 .wk-card:hover{transform:translateY(-5px);
   box-shadow:0 6px 12px rgba(0,0,0,.35),0 28px 64px rgba(0,20,70,.62),0 0 44px rgba(0,190,255,.22),inset 0 1px 0 rgba(255,255,255,.2)}
-.wk-card::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;
-  background:linear-gradient(90deg,var(--blue),var(--cyan));opacity:.85}
+.wk-card::before{content:"";position:absolute;top:0;left:0;right:0;height:4px;opacity:.95}
+/* July cards = blue theme */
+.wk-card.jul::before{background:linear-gradient(90deg,#2f6bff,#5aa9ff)}
+.wk-card.jul{border-color:rgba(90,169,255,.4);
+  background:linear-gradient(165deg,rgba(30,58,140,.72),rgba(10,22,58,.82))}
+.wk-card.jul .wk-num{background:linear-gradient(145deg,#2f6bff,#1e49c8)}
+.wk-card.jul .wk-acq .a{color:#8cc2ff;text-shadow:0 0 18px rgba(90,169,255,.7)}
+.wk-card.jul .wk-check{background:rgba(90,169,255,.1);border-color:rgba(90,169,255,.28)}
+.wk-card.jul .wk-check .ci{background:#5aa9ff;box-shadow:0 0 9px #5aa9ff}
+/* August cards = cyan theme */
+.wk-card.aug::before{background:linear-gradient(90deg,#00d0ff,#00a2e6)}
+.wk-card.aug{border-color:rgba(0,208,255,.4);
+  background:linear-gradient(165deg,rgba(6,72,98,.72),rgba(8,28,56,.84))}
+.wk-card.aug .wk-num{background:linear-gradient(145deg,#00d0ff,#0077b6);box-shadow:0 4px 12px rgba(0,208,255,.5),inset 0 1px 0 rgba(255,255,255,.4)}
+.wk-card.aug .wk-acq .a{color:#3fe0ff;text-shadow:0 0 18px rgba(0,208,255,.75)}
+.wk-card.aug .wk-check{background:rgba(0,208,255,.1);border-color:rgba(0,208,255,.3)}
+.wk-card.aug .wk-check .ci{background:#00d0ff;box-shadow:0 0 9px #00d0ff}
 .wk-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
 .wk-badge{display:flex;align-items:center;gap:9px}
 .wk-num{width:34px;height:34px;border-radius:11px;flex:none;display:grid;place-items:center;
   font-family:'Manrope';font-weight:800;font-size:15px;color:#fff;
   background:linear-gradient(145deg,#2f6bff,#1e49c8);
   box-shadow:0 4px 12px rgba(47,107,255,.5),inset 0 1px 0 rgba(255,255,255,.4)}
-.wk-badge .wl{font-size:11px;color:var(--sub);text-transform:uppercase;letter-spacing:.05em;font-weight:600;line-height:1.3}
-.wk-badge .wl b{display:block;color:#fff;font-size:12px;font-weight:700}
+.wk-badge .wl{font-size:12px;color:var(--sub);text-transform:uppercase;letter-spacing:.04em;font-weight:700;line-height:1.3}
+.wk-badge .wl b{display:block;color:#fff;font-size:13px;font-weight:700}
 .wk-acq{text-align:right}
-.wk-acq .a{font-family:'Manrope';font-weight:800;font-size:24px;color:var(--cyan);text-shadow:0 0 18px rgba(0,208,255,.6);line-height:1}
-.wk-acq .al{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-top:3px}
+.wk-acq .a{font-family:'Manrope';font-weight:800;font-size:30px;line-height:1}
+.wk-acq .al{font-size:11px;color:var(--sub);text-transform:uppercase;letter-spacing:.05em;margin-top:4px;font-weight:600}
 .wk-rows{display:flex;flex-direction:column;gap:2px;margin-bottom:12px}
-.wk-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid rgba(120,170,255,.08);font-size:12px}
+.wk-row{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid rgba(120,170,255,.1);font-size:13.5px}
 .wk-row:last-child{border-bottom:none}
-.wk-row .k{color:var(--sub)}
-.wk-row .v{color:var(--ice);font-weight:600;font-family:'Manrope'}
+.wk-row .k{color:var(--sub);font-weight:500}
+.wk-row .v{color:#fff;font-weight:700;font-family:'Manrope';text-align:right}
 .wk-row .v.hi{color:#fff}
-.wk-check{display:flex;align-items:center;gap:8px;padding:9px 11px;border-radius:12px;font-size:11.5px;line-height:1.4;
-  background:rgba(0,208,255,.08);border:1px solid rgba(0,208,255,.2)}
-.wk-check .ci{width:9px;height:9px;border-radius:50%;flex:none;background:var(--cyan);box-shadow:0 0 9px var(--cyan)}
+.wk-check{display:flex;align-items:center;gap:9px;padding:10px 12px;border-radius:12px;font-size:13px;line-height:1.45}
+.wk-check .ci{width:10px;height:10px;border-radius:50%;flex:none}
 .wk-check b{color:#fff}
-.wk-cum{display:flex;align-items:baseline;gap:6px;margin-top:11px;padding-top:11px;border-top:1px dashed rgba(120,170,255,.18)}
-.wk-cum .cn{font-family:'Manrope';font-weight:800;font-size:17px;color:#fff}
-.wk-cum .ct{font-size:11px;color:var(--muted)}
-@media(max-width:1050px){.week-grid{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:560px){.week-grid{grid-template-columns:1fr}}
+.wk-cum{display:flex;align-items:baseline;gap:7px;margin-top:12px;padding-top:12px;border-top:1px dashed rgba(120,170,255,.2)}
+.wk-cum .cn{font-family:'Manrope';font-weight:800;font-size:20px;color:#fff}
+.wk-cum .ct{font-size:12px;color:var(--sub);font-weight:600}
+@media(max-width:1200px){.week-grid.five{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:1050px){.week-grid,.week-grid.five{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){.week-grid,.week-grid.five{grid-template-columns:1fr}}
 
 .note{font-size:12px;color:var(--muted);margin-top:26px;text-align:center;line-height:1.6}
 .foot-flag{display:inline-flex;align-items:center;gap:8px;padding:8px 16px;border-radius:12px;
@@ -242,12 +277,13 @@ tr.hot td{background:rgba(0,190,255,.10)}
       <div class="logo"><span>L</span></div>
       <div>
         <h1>Longevity — Pilot Command</h1>
-        <p>CEO Planning Model · July–August 2026</p>
+        <p>Planning Model · July–August 2026</p>
       </div>
     </div>
     <div class="hstat">
       <div class="chip">Pilot Budget <b>$77,000</b></div>
-      <div class="chip">Target <b>60 Acq</b></div>
+      <div class="chip">July <b>20 Acq</b></div>
+      <div class="chip">August <b>42 Acq</b></div>
       <div class="chip">Sale Price <b>$1,200</b></div>
     </div>
   </header>
@@ -292,46 +328,54 @@ tr.hot td{background:rgba(0,190,255,.10)}
   <!-- ================= PILOT PATH ================= -->
   <section class="panel active" id="p-pilot">
     <div class="panel-head">
-      <h2>Pilot Path — From 6 Wins Today to 60 by Sep 1</h2>
-      <p>The full 60-day runway. Spend holds at <b>$5k/week for 9 weeks</b> (Jul 3 → Sep 1). Reps stay at 3, but contact rate ramps <b>28% → 46%</b> and close rate climbs steadily — with the final 4 weeks at much higher conversion to land <b>exactly 60 acquisitions</b>. Total pilot spend ~$82,773.</p>
+      <h2>Pilot Path — July and August Plan</h2>
+      <p>The full 60-day runway. Spend holds at <b>$5,000 per week for 9 weeks</b> (Jul 3 → Sep 1). Reps stay at 3, contact rate rises <b>30% → 48%</b> and close rate climbs steadily. <b>July delivers 20 acquisitions</b> and <b>August delivers 42 acquisitions</b>. Total pilot spend $82,773.</p>
     </div>
 
     <div class="kpis">
       <div class="kpi"><div class="lab">Spent to Date</div><div class="num">$37,773</div><div class="sub">Jun 1 → Jul 2</div></div>
-      <div class="kpi bad"><div class="lab">Acq to Date</div><div class="num">6</div><div class="sub">of 60 target</div></div>
-      <div class="kpi accent"><div class="lab">Budget Remaining</div><div class="num">$39,227</div><div class="sub">of $77k cap</div></div>
-      <div class="kpi good"><div class="lab">Acq Still Needed</div><div class="num">54</div><div class="sub">in 9 weeks</div></div>
-      <div class="kpi"><div class="lab">Runway</div><div class="num">9 wks</div><div class="sub">Jul 3 → Sep 1</div></div>
+      <div class="kpi"><div class="lab">Acquisitions to Date</div><div class="num">6</div><div class="sub">before the pilot ramp</div></div>
+      <div class="kpi mo-jul"><div class="lab">July Acquisitions</div><div class="num">20</div><div class="sub">Weeks 1–4</div></div>
+      <div class="kpi mo-aug"><div class="lab">August Acquisitions</div><div class="num">42</div><div class="sub">Weeks 5–9</div></div>
+      <div class="kpi"><div class="lab">Runway</div><div class="num">9 Weeks</div><div class="sub">Jul 3 → Sep 1</div></div>
     </div>
 
     <!-- JULY WEEK-BY-WEEK DETAIL -->
-    <div class="month-head">
+    <div class="month-head jul">
       <h3>July — Week by Week</h3>
-      <span class="month-pill">This month · 4 weeks · Weeks 1–4 of the pilot</span>
+      <span class="month-pill jul">4 Weeks · Weeks 1–4 · 20 Acquisitions</span>
     </div>
-    <div class="cap" style="margin:-6px 0 16px 2px;color:var(--muted)">Full funnel per week with the plan checkpoint each week must clear. July is the deliberate ramp phase — momentum builds here so August can carry the target.</div>
+    <div class="cap" style="margin:-4px 0 16px 2px;color:var(--muted);font-size:14px">Full funnel for each July week with the conversion checkpoint that week must clear.</div>
     <div class="week-grid" id="july-weeks"></div>
+
+    <!-- AUGUST WEEK-BY-WEEK DETAIL -->
+    <div class="month-head aug" style="margin-top:30px">
+      <h3>August — Week by Week</h3>
+      <span class="month-pill aug">5 Weeks · Weeks 5–9 · 42 Acquisitions</span>
+    </div>
+    <div class="cap" style="margin:-4px 0 16px 2px;color:var(--muted);font-size:14px">The high-conversion months. Contact rate reaches 48% and close rate holds above 5.3%.</div>
+    <div class="week-grid five" id="aug-weeks"></div>
 
     <div class="grid g2" style="margin:22px 0 18px">
       <div class="card">
-        <h3>Cumulative Acquisitions — The Climb to 60</h3>
-        <div class="cap">Actual to date, then the weekly forward plan compounding to the target</div>
+        <h3>Cumulative Acquisitions</h3>
+        <div class="cap">Acquisitions to date, then the weekly forward plan</div>
         <div class="chart-box tall"><canvas id="c-pilot-cum"></canvas></div>
       </div>
       <div class="card">
-        <h3>The Ramp — Contact % &amp; Close % Rising Together</h3>
-        <div class="cap">Gradual early lift, aggressive final 4 weeks</div>
+        <h3>Contact Rate and Close Rate by Week</h3>
+        <div class="cap">Both rates rising across the 9 weeks</div>
         <div class="chart-box tall"><canvas id="c-pilot-ramp"></canvas></div>
         <div class="legend-row">
-          <span><i class="dot" style="background:#5aa9ff"></i>Contact rate</span>
-          <span><i class="dot" style="background:#00d0ff"></i>Close rate (acq/contacted)</span>
+          <span><i class="dot" style="background:#5aa9ff"></i>Contact Rate</span>
+          <span><i class="dot" style="background:#00d0ff"></i>Close Rate (Acq / Contacted)</span>
         </div>
       </div>
     </div>
 
     <div class="card" style="margin-bottom:18px">
-      <h3>Weekly Battle Plan — Every Metric to Hit 60</h3>
-      <div class="cap">Weeks 1–4 = July · Weeks 5–9 = August · all weeks at $5k spend</div>
+      <h3>Weekly Plan — All Metrics</h3>
+      <div class="cap">Weeks 1–4 are July · Weeks 5–9 are August · every week at $5,000 spend</div>
       <div style="overflow-x:auto">
         <table id="pilot-weekly">
           <thead><tr>
@@ -345,13 +389,13 @@ tr.hot td{background:rgba(0,190,255,.10)}
 
     <div class="grid g2" style="margin-bottom:18px">
       <div class="card">
-        <h3>Monthly Rollup — July vs August</h3>
-        <div class="cap">Where the wins land across the two pilot months</div>
+        <h3>Acquisitions by Month</h3>
+        <div class="cap">July and August acquisitions and spend</div>
         <div class="chart-box"><canvas id="c-pilot-month"></canvas></div>
       </div>
       <div class="card">
-        <h3>Month-by-Month Targets</h3>
-        <div class="cap">What must be true at each month-end checkpoint</div>
+        <h3>Monthly Totals</h3>
+        <div class="cap">Spend, leads, acquisitions and revenue per month</div>
         <div style="overflow-x:auto">
           <table id="pilot-month">
             <thead><tr><th>Month</th><th>Spend</th><th>Leads</th><th>Acq</th><th>Cum Acq</th><th>Revenue</th><th>Avg Close</th></tr></thead>
@@ -363,7 +407,7 @@ tr.hot td{background:rgba(0,190,255,.10)}
     </div>
 
     <div class="verdict">
-      <h4>Pilot Verdict</h4>
+      <h4>Pilot Summary</h4>
       <p id="pilot-verdict"></p>
     </div>
   </section>
@@ -371,41 +415,41 @@ tr.hot td{background:rgba(0,190,255,.10)}
   <!-- ================= EXEC ================= -->
   <section class="panel" id="p-exec">
     <div class="panel-head">
-      <h2>Executive Summary — A Profitable Plan That Lives on Conversion</h2>
-      <p>The live snapshot of the operating model. Drag the four inputs above and every card, chart and tab recalculates in real time.</p>
+      <h2>Executive Summary</h2>
+      <p>Live snapshot of the operating model. Drag the four inputs above and every card, chart and tab recalculates in real time.</p>
     </div>
     <div class="kpis" id="exec-kpis"></div>
     <div class="grid g2">
       <div class="card"><h3>The Week's P&amp;L</h3><div class="cap" id="exec-pl-cap"></div><div class="chart-box"><canvas id="c-exec-pl"></canvas></div></div>
-      <div class="card"><h3>Margin of Safety — Wins vs Break-Even</h3><div class="cap" id="exec-mos-cap"></div><div class="chart-box"><canvas id="c-exec-mos"></canvas></div></div>
+      <div class="card"><h3>Acquisitions vs Break-Even</h3><div class="cap" id="exec-mos-cap"></div><div class="chart-box"><canvas id="c-exec-mos"></canvas></div></div>
     </div>
-    <div class="card" style="margin-top:18px"><h3>Monthly Profit Swings on One Point of Conversion</h3><div class="cap">Profit sensitivity to close rate at current spend &amp; contact</div><div class="chart-box"><canvas id="c-exec-swing"></canvas></div></div>
-    <div class="verdict"><h4>Board Takeaway</h4><p id="exec-verdict"></p></div>
+    <div class="card" style="margin-top:18px"><h3>Monthly Profit by Close Rate</h3><div class="cap">Profit sensitivity to close rate at current spend &amp; contact</div><div class="chart-box"><canvas id="c-exec-swing"></canvas></div></div>
+    <div class="verdict"><h4>Summary</h4><p id="exec-verdict"></p></div>
   </section>
 
   <!-- ================= UNIT ================= -->
   <section class="panel" id="p-unit">
-    <div class="panel-head"><h2>Unit Economics — Does the Plan Clear CAC?</h2><p>Because spend is fixed each week, CAC and ROAS are entirely a function of how many wins the team closes.</p></div>
+    <div class="panel-head"><h2>Unit Economics</h2><p>Because spend is fixed each week, CAC and ROAS are entirely a function of how many acquisitions the team closes.</p></div>
     <div class="kpis" id="unit-kpis"></div>
     <div class="grid g2">
-      <div class="card"><h3>ROAS by Weekly Wins</h3><div class="cap">Crosses 1.0× at break-even; target sits above</div><div class="chart-box"><canvas id="c-unit-roas"></canvas></div></div>
-      <div class="card"><h3>CAC Falls as Wins Rise</h3><div class="cap">Fixed spend, more clients — vs $1,200 price</div><div class="chart-box"><canvas id="c-unit-cac"></canvas></div></div>
+      <div class="card"><h3>ROAS by Weekly Acquisitions</h3><div class="cap">Crosses 1.0× at break-even; target sits above</div><div class="chart-box"><canvas id="c-unit-roas"></canvas></div></div>
+      <div class="card"><h3>CAC by Weekly Acquisitions</h3><div class="cap">Fixed spend, more clients — vs $1,200 price</div><div class="chart-box"><canvas id="c-unit-cac"></canvas></div></div>
     </div>
     <div class="verdict"><h4>Economics Verdict</h4><p id="unit-verdict"></p></div>
   </section>
 
   <!-- ================= PATH ================= -->
   <section class="panel" id="p-path">
-    <div class="panel-head"><h2>Path to Wins — What Close Rate Gets Us There</h2><p>Working backward from the target: at the current contact rate, what close rate on contacted leads is required?</p></div>
+    <div class="panel-head"><h2>Path to Acquisitions</h2><p>Working backward from the target: at the current contact rate, what close rate on contacted leads is required?</p></div>
     <div class="kpis" id="path-kpis"></div>
-    <div class="card"><h3>Wins Scale Linearly With Close Rate</h3><div class="cap">Acquisitions &amp; revenue per week vs close rate</div><div class="chart-box tall"><canvas id="c-path"></canvas></div></div>
-    <div class="card" style="margin-top:18px"><h3>Close Rate → Wins → Revenue → Profit</h3><div style="overflow-x:auto"><table id="path-table"><thead><tr><th>Close %</th><th>Wins/Wk</th><th>Rev/Wk</th><th>Profit/Wk</th><th>Verdict</th></tr></thead><tbody></tbody></table></div></div>
+    <div class="card"><h3>Acquisitions by Close Rate</h3><div class="cap">Acquisitions &amp; revenue per week vs close rate</div><div class="chart-box tall"><canvas id="c-path"></canvas></div></div>
+    <div class="card" style="margin-top:18px"><h3>Close Rate, Acquisitions, Revenue and Profit</h3><div style="overflow-x:auto"><table id="path-table"><thead><tr><th>Close %</th><th>Wins/Wk</th><th>Rev/Wk</th><th>Profit/Wk</th><th>Verdict</th></tr></thead><tbody></tbody></table></div></div>
     <div class="verdict"><h4>Conversion Verdict</h4><p id="path-verdict"></p></div>
   </section>
 
   <!-- ================= REP ================= -->
   <section class="panel" id="p-rep">
-    <div class="panel-head"><h2>Rep Capacity — How Hard Must 3 Reps Dial?</h2><p>Contact rate is powered by dialing volume. Here's the calling load the plan demands from the fixed 3-rep team.</p></div>
+    <div class="panel-head"><h2>Rep Capacity</h2><p>Contact rate is powered by dialing volume. Here is the calling load the plan requires from the 3-rep team.</p></div>
     <div class="kpis" id="rep-kpis"></div>
     <div class="grid g2">
       <div class="card"><h3>Dials per Weekday vs Team Size</h3><div class="cap">What each headcount can service</div><div class="chart-box"><canvas id="c-rep-cap"></canvas></div></div>
@@ -417,18 +461,18 @@ tr.hot td{background:rgba(0,190,255,.10)}
 
   <!-- ================= FUNNEL ================= -->
   <section class="panel" id="p-funnel">
-    <div class="panel-head"><h2>Funnel &amp; Leakage — Where the Lead Flow Goes</h2><p>From leads generated to wins closed — and the value trapped in leads that are never contacted.</p></div>
+    <div class="panel-head"><h2>Funnel &amp; Leakage</h2><p>From leads generated to acquisitions closed, and the value in leads that are never contacted.</p></div>
     <div class="kpis" id="funnel-kpis"></div>
     <div class="grid g2">
-      <div class="card"><h3>The Funnel — Leads → Contacted → Wins</h3><div class="cap">Weekly volume at each stage</div><div class="chart-box"><canvas id="c-funnel"></canvas></div></div>
-      <div class="card"><h3>Highest-Yield Single Levers</h3><div class="cap">Added wins/week per realistic move</div><div class="chart-box"><canvas id="c-funnel-lever"></canvas></div></div>
+      <div class="card"><h3>Funnel — Leads, Contacted, Acquisitions</h3><div class="cap">Weekly volume at each stage</div><div class="chart-box"><canvas id="c-funnel"></canvas></div></div>
+      <div class="card"><h3>Single Levers</h3><div class="cap">Added acquisitions per week per move</div><div class="chart-box"><canvas id="c-funnel-lever"></canvas></div></div>
     </div>
     <div class="verdict"><h4>Funnel Verdict</h4><p id="funnel-verdict"></p></div>
   </section>
 
   <!-- ================= MIX ================= -->
   <section class="panel" id="p-mix">
-    <div class="panel-head"><h2>Lead Mix — The Free Demand From Bio</h2><p>The organic bio link supplies leads at $0 CPL, pulling the blended cost of acquisition below the paid rate.</p></div>
+    <div class="panel-head"><h2>Lead Mix</h2><p>The organic bio link supplies leads at $0 CPL, pulling the blended cost of acquisition below the paid rate.</p></div>
     <div class="kpis" id="mix-kpis"></div>
     <div class="grid g2">
       <div class="card"><h3>Lead Source Split</h3><div class="cap">Paid vs organic bio</div><div class="chart-box"><canvas id="c-mix-split"></canvas></div></div>
@@ -439,15 +483,15 @@ tr.hot td{background:rgba(0,190,255,.10)}
 
   <!-- ================= RISK ================= -->
   <section class="panel" id="p-risk">
-    <div class="panel-head"><h2>Sensitivity &amp; Risk — The Two Dials That Decide the Month</h2><p>Every combination of contact rate × close rate, mapped to weekly wins. Only the top-right zone clears break-even.</p></div>
+    <div class="panel-head"><h2>Sensitivity &amp; Risk</h2><p>Every combination of contact rate × close rate, mapped to weekly acquisitions. Only the top-right zone clears break-even.</p></div>
     <div class="kpis" id="risk-kpis"></div>
-    <div class="card"><h3>Weekly Wins by Contact × Close</h3><div class="cap">Green cells clear break-even at current spend</div><div style="overflow-x:auto"><table id="risk-table"></table></div></div>
+    <div class="card"><h3>Weekly Acquisitions by Contact and Close</h3><div class="cap">Green cells clear break-even at current spend</div><div style="overflow-x:auto"><table id="risk-table"></table></div></div>
     <div class="verdict"><h4>Risk Verdict</h4><p id="risk-verdict"></p></div>
   </section>
 
   <div class="note">
-    Live model — all values recalculate from the four inputs above. Pilot Path holds the $77,000 cap and lands exactly on 60 acquisitions.<br/>
-    Longevity Life Academy · CEO Planning Model · Built July 2026
+    Live model — all values recalculate from the four inputs above. Pilot Path delivers 20 acquisitions in July and 42 in August.<br/>
+    Longevity Life Academy · Planning Model · Built July 2026
   </div>
 </div>
 
